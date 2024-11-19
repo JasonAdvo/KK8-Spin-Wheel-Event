@@ -400,7 +400,6 @@ export default {
 
 			// Select the prize ID and store it for later
 			this.selectedPrizeId = this.selectRandomPrize();
-			console.log(this.selectedPrizeId, 'Selected Prize Id')
 
 			this.prizeId = this.selectedPrizeId
 

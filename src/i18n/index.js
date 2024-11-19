@@ -31,7 +31,7 @@ const i18n = createI18n({
 });
 
 // Log the current locale to the console
-console.log('Current language:', i18n.global.locale);
+// console.log('Current language:', i18n.global.locale);
 
 // Function to switch languages
 export function switchLanguage(lang) {
@@ -40,7 +40,7 @@ export function switchLanguage(lang) {
 	localStorage.setItem('user-locale', lang); // Store user preference in localStorage
 
 	// Log the new locale when switched
-	console.log('Switched language to:', i18n.global.locale);
+	// console.log('Switched language to:', i18n.global.locale);
 
 	// Optionally, you can update the URL path when switching languages
 	if (lang === 'zh') {
