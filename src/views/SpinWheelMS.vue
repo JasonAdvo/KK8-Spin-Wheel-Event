@@ -477,6 +477,8 @@ export default {
 			switchLanguage(lang); // Call the function and pass the desired language
 
 			document.body.style.overflow = 'auto';
+
+			window.location.reload();
 		},
 	},
 };
