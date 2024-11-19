@@ -43,7 +43,7 @@
 					</div>
 
 					<div class="Chance_Section ta-center color-white">
-						Kamu ada 1 putaran peluang
+						Kamu ada {{ currentChance }} putaran peluang
 					</div>
 
 				</div>
@@ -276,7 +276,7 @@
 import { SpinTheWheel } from 'vue-spin-the-wheel'
 import PrizePopup from '@/components/PrizePopup.vue';// Import the PrizePopup component
 import { switchLanguage } from '@/i18n'
-
+import { mapGetters } from 'vuex';
 
 export default {
 	components: {
@@ -369,6 +369,7 @@ export default {
 			// Ensure the index has the correct number of digits, like 001 or 123
 			return String(this.n).padStart(3, '0');
 		},
+		...mapGetters(['currentChance']),
 	},
 	mounted() {
 		this.startLoop();
@@ -399,17 +400,20 @@ export default {
 		},
 		// Trigger the spin on start and calculate the final angle
 		onImageRotateStart() {
-			if (this.isSpinning) return; // Prevent multiple spins
+			if (this.isSpinning || this.currentChance === 0) return; // Prevent spinning if already spinning or no chances left
+
 			this.isSpinning = true; // Lock the spin
+
+			this.$store.dispatch('spinWheel');
 
 			// Select the prize ID and store it for later
 			this.selectedPrizeId = this.selectRandomPrize();
-
-			this.prizeId = this.selectedPrizeId
+			this.prizeId = this.selectedPrizeId;
 
 			// Ensure the target angle is passed correctly to the wheel component
 			this.$refs.wheelEl.startRotate();
 		},
+
 		// After the spin ends, determine the prize and display the result
 		onRotateEnd() {
 			// Use the previously selected prize ID
@@ -420,7 +424,12 @@ export default {
 
 			// Show the prize result and unlock for the next spin
 			this.showPopup = true; // Show the popup with the prize details
+
 			this.isSpinning = false; // Unlock for the next spin
+
+			if (this.currentChance === 0) {
+				this.isSpinning = true; // Lock spinning when chances are exhausted
+			}
 		},
 		selectRandomPrize() {
 			// Define only the target prize IDs
@@ -476,8 +485,6 @@ export default {
 			switchLanguage(lang); // Call the function and pass the desired language
 
 			document.body.style.overflow = 'auto';
-
-			window.location.reload();
 		},
 	},
 };
