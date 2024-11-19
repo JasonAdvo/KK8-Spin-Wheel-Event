@@ -1,0 +1,24 @@
+{
+	"name": "kk8-spin-wheel-event",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite --host",
+		"build": "vite build",
+		"preview": "vite preview --host"
+	},
+	"dependencies": {
+		"bootstrap": "^5.3.3",
+		"i18n": "^0.15.1",
+		"vue-fortune-wheel": "^2.1.0",
+		"vue-i18n": "^10.0.4",
+		"vue-router": "^4.4.5",
+		"vue-spin-the-wheel": "^2.2.5"
+	},
+	"devDependencies": {
+		"@vitejs/plugin-vue": "^5.1.4",
+		"vite": "^5.4.10",
+		"vite-plugin-vue-devtools": "^7.5.4"
+	}
+}
