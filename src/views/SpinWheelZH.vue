@@ -29,7 +29,7 @@
 
 								<template #wheel>
 									<img class="SpinWheelInnerFrame" style="transform: unset"
-										src="/images/spinwheel-inner-frame.webp" />
+										src="/images/spinwheel-inner-frame.webp" alt="Spin Wheel" />
 								</template>
 							</SpinTheWheel>
 						</div>
