@@ -2,7 +2,7 @@
 
 @font-face {
 	font-family: 'Averta';
-	src: url('src/assets/font/AvertaDemo-Regular.otf') format('opentype');
+	src: url('/font/AvertaDemo-Regular.otf') format('opentype');
 	font-weight: normal;
 	font-style: normal;
 }
