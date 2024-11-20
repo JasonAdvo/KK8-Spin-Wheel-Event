@@ -5,5 +5,6 @@
 	"Redeem": "Tebus",
 	"Copied_Text": "Kod Promosi Berjaya Disalin!",
 	"Error_Text": "*Salin kod promosi dan tanda kotak untuk menebus",
-	"Promo": "Kod Promosi"
+	"Promo": "Kod Promosi",
+	"Error_Copy_Text": "*Salinan kod promosi gagal, sila salin kod promosi secara manual"
 }

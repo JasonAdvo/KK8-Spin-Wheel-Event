@@ -52,6 +52,10 @@
 			{{ $t('Error_Text') }}
 		</div>
 
+		<div v-if="showErrorCopyText" class="color-F00 fs-14 fw-600">
+			{{ $t('Error_Copy_Text') }}
+		</div>
+
 	</div>
 </template>
 
@@ -73,8 +77,10 @@ export default {
 	data() {
 		return {
 			showCopyText: false,
+			successCopyText: false,
 			showCheckText: false,
 			checked: false,
+			showErrorCopyText: false
 		}
 	},
 	watch: {
@@ -94,6 +100,8 @@ export default {
 			this.showCopyText = false;
 			this.showCheckText = false;
 			this.checked = false;
+			this.showErrorCopyText = false;
+			this.successCopyText = false;
 		},
 		copyToClipboard() {
 			const promoCode = this.prize.code;  // Get the actual promo code value
@@ -101,9 +109,11 @@ export default {
 			if (navigator.clipboard) {
 				// Use the Clipboard API for modern browsers
 				navigator.clipboard.writeText(promoCode).then(() => {
-					alert("Promo code copied: " + promoCode);
+					// alert("Promo code copied: " + promoCode);
 				}).catch((err) => {
 					console.error("Error copying text: ", err);
+					// Set error flag when copying fails
+					this.showErrorCopyText = true;
 				});
 			} else {
 				// Fallback using textarea for older browsers or mobile devices
@@ -111,16 +121,29 @@ export default {
 				textArea.value = promoCode; // Set the value to the promo code
 				document.body.appendChild(textArea);
 				textArea.select();
-				document.execCommand('copy');
+
+				try {
+					const successful = document.execCommand('copy');
+					if (!successful) {
+						// If execCommand fails to copy, set the error flag
+						this.showErrorCopyText = true;
+					}
+				} catch (err) {
+					// Catch any error and set the error flag
+					console.error("Error copying text using execCommand: ", err);
+					this.showErrorCopyText = true;
+				}
+
 				document.body.removeChild(textArea);
-				alert("Promo code copied: " + promoCode);
 			}
 
+			this.successCopyText = true;
 			this.showCopyText = true;
 			this.showCheckText = false;
-		},
+		}
+		,
 		checkRedeem() {
-			if (!this.showCopyText) {
+			if (!this.successCopyText) {
 				// If the promo code hasn't been copied
 				this.showCheckText = true; // Show "Copy and tick the checkbox" message
 			} else if (!this.checked) {

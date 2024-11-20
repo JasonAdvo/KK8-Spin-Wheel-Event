@@ -5,5 +5,6 @@
 	"Redeem": "兑换",
 	"Copied_Text": "优惠代码成功复制！",
 	"Error_Text": "*复制优惠代码并勾选方框以进行兑换",
-	"Promo": "优惠代码"
+	"Promo": "优惠代码",
+	"Error_Copy_Text": "*复制促销代码失败，请手动复制优惠代码"
 }

@@ -4,8 +4,8 @@ import { createStore } from 'vuex';
 const store = createStore({
 	state: {
 		// Load the saved value from localStorage or set a default value of 1
-		chance: localStorage.getItem('chance') ? parseInt(localStorage.getItem('chance')) : 1,
-		// chance: 1, // Set to 1 if no chance to use
+		// chance: localStorage.getItem('chance') ? parseInt(localStorage.getItem('chance')) : 1,
+		chance: 1, // Set to 1 if no chance to use
 	},
 	mutations: {
 		setChance(state) {
