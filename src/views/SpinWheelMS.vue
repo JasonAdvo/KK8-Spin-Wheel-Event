@@ -20,6 +20,7 @@
 
 						<img class="SpinWheelRing absolute"
 							:src="`/images/spinwheel-fx/spinwheel-fx_00${formattedIndex}.webp`" alt="Spinning Wheel" />
+
 						<div style="overflow:hidden;">
 							<SpinTheWheel class="relative"
 								style="width: 100%; left: unset; right: unset; transform: unset; max-width: 100%; z-index: 2;"
@@ -86,7 +87,8 @@
 
 					<div class="Winner_List" v-if="selectedTab === 'WinnerList'">
 						<div class="flex fd-column">
-							<div class="flex jc-sb align-center" v-for="(Record, Index) in WinnerList" :key="Index">
+							<div class="flex jc-sb align-center mb-5" v-for="(Record, Index) in WinnerList"
+								:key="Index">
 								<div class="fs-16 color-white">
 									{{ Record.date }}
 								</div>
@@ -108,7 +110,8 @@
 
 					<div class="Winner_Record_List" v-if="selectedTab === 'WinnerRecord'">
 						<div class="flex fd-column">
-							<div class="flex jc-sb align-center" v-for="(Record, Index) in RecordList" :key="Index">
+							<div class="flex jc-sb align-center mb-5" v-for="(Record, Index) in RecordList"
+								:key="Index">
 								<div class="fs-16 color-white">
 									{{ Record.date }}
 								</div>
@@ -192,7 +195,7 @@
 
 		</div>
 
-		<br>
+		<!-- <br>
 
 		<div class="language-dropdown">
 			<select class="fs-16 fw-600 background-white" @change="handleLanguageChange" v-model="selectedLanguage">
@@ -200,7 +203,7 @@
 				<option value="zh">中文</option>
 				<option value="ms">Bahasa</option>
 			</select>
-		</div>
+		</div> -->
 
 		<br>
 
@@ -285,7 +288,10 @@ export default {
 	},
 	data() {
 		return {
-			n: 0, // Start with the first image
+			n: 0, // Current frame index
+			animationFrameId: null, // ID for canceling the animation
+			frameRate: 60, // Default frame rate (will adjust dynamically)
+			useSetInterval: false, // Determines whether to use setInterval or requestAnimationFrame
 			selectedLanguage: "ms",
 			selectedTab: "WinnerRecord",
 			PrizeList: [
@@ -372,13 +378,52 @@ export default {
 		...mapGetters(['currentChance']),
 	},
 	mounted() {
-		this.startLoop();
+		this.detectFrameRateAndStartLoop();
 	},
 	methods: {
-		startLoop() {
+		detectFrameRateAndStartLoop() {
+			let frameCount = 0;
+			let startTime = performance.now();
+
+			const measureFrameRate = (timestamp) => {
+				frameCount++;
+				const elapsed = timestamp - startTime;
+
+				if (elapsed >= 1000) {
+					// Calculate the actual frame rate
+					this.frameRate = frameCount;
+
+					// Decide which method to use based on frame rate
+					this.useSetInterval = this.frameRate > 50;
+
+					// Start the appropriate loop
+					this.useSetInterval ? this.startIntervalLoop() : this.startAnimationFrameLoop();
+					return; // Stop measuring after 1 second
+				}
+
+				requestAnimationFrame(measureFrameRate);
+			};
+
+			requestAnimationFrame(measureFrameRate);
+		},
+		startAnimationFrameLoop() {
+			const loop = (timestamp) => {
+				this.n = (this.n + 1) % 124; // Increment and reset the index
+				this.animationFrameId = requestAnimationFrame(loop); // Schedule the next frame
+			};
+
+			this.animationFrameId = requestAnimationFrame(loop); // Start the animation
+		},
+		startIntervalLoop() {
 			setInterval(() => {
-				this.n = (this.n + 1) % 124; // Reset to 0 after reaching 123
-			}, 50); // Adjust the speed by changing the interval in milliseconds
+				this.n = (this.n + 1) % 124; // Increment and reset the index
+				// console.log('Start > 60Hz Looping')
+			}, 50); // Fixed 50ms interval
+		},
+		stopLoop() {
+			if (this.animationFrameId) {
+				cancelAnimationFrame(this.animationFrameId); // Stop the animation frame loop
+			}
 		},
 		togglePopupSetting() {
 			this.showPopupSetting = !this.showPopupSetting;
@@ -485,8 +530,13 @@ export default {
 			switchLanguage(lang); // Call the function and pass the desired language
 
 			document.body.style.overflow = 'auto';
+
+			window.location.reload();
 		},
 	},
+	beforeDestroy() {
+		this.stopLoop(); // Clean up the animation frame when the component is destroyed
+	}
 };
 </script>
 
@@ -759,7 +809,7 @@ export default {
 @media screen and (min-width: 430px) {
 	.Spin_Wheel {
 		background-image: url('/images/spinwheel-bg-web.webp');
-		max-width: 450px;
+		max-width: 500px;
 	}
 
 	.Exit_Button {
@@ -806,13 +856,13 @@ export default {
 	}
 
 	.Spin_Wheel {
-		padding-top: 25px;
+		padding-top: 65px;
 	}
 
 	.Prize_Record_Section {
 		order: 2;
 		width: 50%;
-		margin-top: 80px;
+		margin-top: 100px;
 		padding-bottom: 0;
 	}
 
@@ -822,7 +872,7 @@ export default {
 	}
 
 	.Spin_Wheel_Button {
-		bottom: 20px;
+		bottom: 2px;
 	}
 }
 </style>
