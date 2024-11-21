@@ -176,7 +176,7 @@
 				<div class="windowsSlider">
 					<input v-model="percent" type="range" class="windowsSliderInput" min="0" max="98"
 						@input="updateVolume" />
-					<div class="windowsSliderProgress" :style="{ width: percent + '%' }"></div>
+					<div v-if="bgmNotMuted" class="windowsSliderProgress" :style="{ width: percent + '%' }"></div>
 				</div>
 			</div>
 
@@ -192,13 +192,13 @@
 				<div class="windowsSlider">
 					<input v-model="percent2" type="range" class="windowsSliderInput" min="0" max="98"
 						@input="updateMVolume" />
-					<div class="windowsSliderProgress" :style="{ width: percent2 + '%' }"></div>
+					<div v-if="musicNotMuted" class="windowsSliderProgress" :style="{ width: percent2 + '%' }"></div>
 				</div>
 			</div>
 
 		</div>
 
-		<!-- <br>
+		<br>
 
 		<div class="language-dropdown">
 			<select class="fs-16 fw-600 background-white" @change="handleLanguageChange" v-model="selectedLanguage">
@@ -206,7 +206,7 @@
 				<option value="zh">中文</option>
 				<option value="ms">Bahasa</option>
 			</select>
-		</div> -->
+		</div>
 
 		<br>
 
@@ -295,6 +295,8 @@ export default {
 			music: null,
 			swMusic: null,
 			rewardMusic: null,
+			bgmNotMuted: true,
+			musicNotMuted: true,
 			selectedLanguage: "en",
 			selectedTab: "WinnerRecord",
 			PrizeList: [
@@ -358,24 +360,6 @@ export default {
 				{ id: 18, value: "Free Credit RM88", weight: 0, code: '123ab' }
 			]
 		};
-	},
-	watch: {
-		percent(newValue) {
-			if (newValue > 0) {
-				// Unmute using Vuex
-				this.$store.dispatch('toggleMute', false); // Set VolumeMute to false in Vuex
-			} else {
-				this.$store.dispatch('toggleMute', true); // Mute if volume is 0
-			}
-		},
-		percent2(newValue) {
-			if (newValue > 0) {
-				// Unmute using Vuex
-				this.$store.dispatch('toggleMusicMute', false); // Set MusicMute to false in Vuex
-			} else {
-				this.$store.dispatch('toggleMusicMute', true); // Mute if volume is 0
-			}
-		},
 	},
 	computed: {
 		formattedIndex() {
@@ -532,6 +516,8 @@ export default {
 		muteVolume() {
 			this.$store.dispatch('toggleMute'); // Toggle mute in Vuex
 
+			this.bgmNotMuted = !this.bgmNotMuted;
+
 			if (this.VolumeMute) {
 
 				this.bgm.volume = 0; // Mute the audio
@@ -542,6 +528,9 @@ export default {
 		},
 		muteMusic() {
 			this.$store.dispatch('toggleMusicMute'); // Toggle mute in Vuex
+
+			this.musicNotMuted = !this.musicNotMuted;
+
 			if (this.MusicMute) {
 
 				this.music.volume = 0; // Mute the audio
@@ -555,24 +544,43 @@ export default {
 			}
 		},
 		updateVolume() {
+			this.bgmNotMuted = true;
+
+			this.percent = Number(this.percent);
+
 			this.$store.dispatch('updateBgmVolume', this.percent); // Update Vuex volume
+
 			if (this.percent === 0) {
+				this.bgm.volume = 0;
+
 				this.$store.dispatch('toggleMute'); // If slider is 0, mute the volume
 			} else {
-				this.bgm.volume = this.percent / 100; // Update the audio volume
+
+				this.bgm.volume = this.percent / 100; // Update the audio volum
+
 				if (this.VolumeMute) {
 					this.$store.dispatch('toggleMute'); // Unmute if volume is adjusted
 				}
 			}
 		},
 		updateMVolume() {
+			this.musicNotMuted = true;
+
 			this.$store.dispatch('updateMusicVolume', this.percent2); // Update Vuex volume
+
+			this.percent2 = Number(this.percent2);
+
 			if (this.percent2 === 0) {
+				this.music.volume = 0;
+				this.swMusic.volume = 0;
+				this.rewardMusic.volume = 0;
+
 				this.$store.dispatch('toggleMusicMute'); // If slider is 0, mute the volume
 			} else {
 				this.music.volume = this.percent2 / 100; // Update the audio volume
 				this.swMusic.volume = this.percent2 / 100; // Update volume from Vuex
 				this.rewardMusic.volume = this.percent2 / 100; // Update volume from Vuex
+
 				if (this.MusicMute) {
 					this.$store.dispatch('toggleMusicMute'); // Unmute if volume is adjusted
 				}
