@@ -5,6 +5,7 @@ const store = createStore({
 	state: {
 		// Load the saved value from localStorage or set a default value of 1
 		// chance: localStorage.getItem('chance') ? parseInt(localStorage.getItem('chance')) : 1,
+		isBgmPlaying: false,
 		bgmVolume: localStorage.getItem('bgmVolume') ? parseInt(localStorage.getItem('bgmVolume')) : 98, // Default volume is 98
 		bgmMute: false,
 		musicVolume: localStorage.getItem('musicVolume') ? parseInt(localStorage.getItem('musicVolume')) : 98, // Default volume is 98
@@ -31,6 +32,9 @@ const store = createStore({
 		setMusicMute(state, isMuted) {
 			state.musicMute = isMuted;
 		},
+		setBgmPlaying(state, isPlayed) {
+			state.isBgmPlaying = isPlayed;
+		},
 	},
 	actions: {
 		spinWheel({ commit }) {
@@ -52,6 +56,10 @@ const store = createStore({
 			commit('setMusicMute', isMuted);
 			commit('setMusicVolume', isMuted ? 0 : state.musicVolume); // If muted, set volume to 0
 		},
+		toggleBgmPlaying({ commit, state }) {
+			const isPlaying = !state.isBgmPlaying;
+			commit('setBgmPlaying', isPlaying);
+		},
 	},
 	getters: {
 		currentChance(state) {
@@ -68,6 +76,9 @@ const store = createStore({
 		},
 		isMusicMuted(state) {
 			return state.musicMute;
+		},
+		currentBgmState(state) {
+			return state.isBgmPlaying;
 		},
 	},
 });

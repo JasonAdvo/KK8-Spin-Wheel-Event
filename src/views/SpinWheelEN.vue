@@ -75,13 +75,13 @@
 					<div class="Prize_Tab flex jc-sb">
 						<div class="Tab_Button flex jc-center align-center pointer fw-700"
 							:class="{ 'background-white color-000D78': selectedTab !== 'WinnerList', 'background-orange color-622200': selectedTab === 'WinnerList' }"
-							@click="selectedTab = 'WinnerList'">
+							@click="handleClick('WinnerList')">
 							WINNER LIST
 						</div>
 
 						<div class="Tab_Button flex jc-center align-center pointer fw-700"
 							:class="{ 'background-white color-000D78': selectedTab !== 'WinnerRecord', 'background-orange color-622200': selectedTab === 'WinnerRecord' }"
-							@click="selectedTab = 'WinnerRecord'">
+							@click="handleClick('WinnerRecord')">
 							WINNER RECORD
 						</div>
 					</div>
@@ -137,7 +137,8 @@
 								</div>
 							</div>
 
-							<div class="Redeem_Button flex jc-center align-center background-orange pointer">
+							<div @click="playBGM"
+								class="Redeem_Button flex jc-center align-center background-orange pointer">
 								<div class="fs-14 fw-800 color-622200 text-uppercase">
 									Redeem
 								</div>
@@ -198,7 +199,7 @@
 
 		</div>
 
-		<br>
+		<!-- <br>
 
 		<div class="language-dropdown">
 			<select class="fs-16 fw-600 background-white" @change="handleLanguageChange" v-model="selectedLanguage">
@@ -206,7 +207,7 @@
 				<option value="zh">中文</option>
 				<option value="ms">Bahasa</option>
 			</select>
-		</div>
+		</div> -->
 
 		<br>
 
@@ -377,7 +378,7 @@ export default {
 	mounted() {
 		this.detectFrameRateAndStartLoop();
 		this.musicLoad()
-		this.playBGM();
+		// this.playBGM();
 	},
 	methods: {
 		musicLoad() {
@@ -399,8 +400,16 @@ export default {
 			this.rewardMusic.volume = this.percent2 / 100;
 
 		},
+		handleClick(tabName) {
+			this.selectedTab = tabName;
+			this.playBGM();
+		},
 		playBGM() {
-			this.bgm.play();
+			// Check if BGM is playing. If not, toggle its state in Vuex and play the BGM.
+			if (!this.$store.getters.currentBgmState) {
+				this.$store.dispatch('toggleBgmPlaying');
+				this.bgm.play(); // Ensure this.bgm is your BGM audio instance
+			}
 		},
 		detectFrameRateAndStartLoop() {
 			let frameCount = 0;
@@ -448,6 +457,10 @@ export default {
 			}
 		},
 		togglePopupSetting() {
+
+			// Check if BGM is playing. If not, toggle its state in Vuex and play the BGM.
+			this.playBGM()
+
 			this.showPopupSetting = !this.showPopupSetting;
 
 			if (this.showPopupSetting) {
@@ -457,6 +470,10 @@ export default {
 			}
 		},
 		togglePopupExit() {
+
+			// Check if BGM is playing. If not, toggle its state in Vuex and play the BGM.
+			this.playBGM()
+
 			this.showPopupExit = !this.showPopupExit;
 
 			if (this.showPopupExit) {
@@ -470,6 +487,9 @@ export default {
 			if (this.isSpinning || this.currentChance === 0) return; // Prevent spinning if already spinning or no chances left
 
 			this.isSpinning = true; // Lock the spin
+
+			// Check if BGM is playing. If not, toggle its state in Vuex and play the BGM.
+			this.playBGM()
 
 			this.$store.dispatch('spinWheel');
 
@@ -587,6 +607,10 @@ export default {
 			}
 		},
 		copyToClipboard(code) {
+
+			// Check if BGM is playing. If not, toggle its state in Vuex and play the BGM.
+			this.playBGM()
+
 			if (navigator.clipboard) {
 				navigator.clipboard.writeText(code).then(() => {
 					alert("Promo code copied: " + code);
