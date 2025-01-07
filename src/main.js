@@ -8,7 +8,7 @@ import store from './store';
 import './assets/main.css'
 
 // Import Bootstrap CSS
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const app = createApp(App);
 

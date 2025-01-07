@@ -33,42 +33,9 @@ a,
 	}
 }
 
-/* Position CSS */
-.relative {
-	position: relative;
-}
-
-.absolute {
-	position: absolute;
-}
-
-.fixed {
-	position: fixed;
-}
-
 /* Flex CSS */
-.flex {
-	display: flex;
-}
-
-.jc-center {
-	justify-content: center;
-}
-
-.jc-sb {
-	justify-content: space-between;
-}
-
-.align-center {
-	align-items: center;
-}
-
 .ji-center {
 	justify-items: center;
-}
-
-.fd-column {
-	flex-direction: column;
 }
 
 /* Font CSS */
@@ -92,10 +59,6 @@ a,
 	font-size: 36px;
 }
 
-.fw-400 {
-	font-weight: 400;
-}
-
 .fw-600 {
 	font-weight: 600;
 }
@@ -106,15 +69,6 @@ a,
 
 .fw-800 {
 	font-weight: 800;
-}
-
-/* Text CSS */
-.text-uppercase {
-	text-transform: uppercase;
-}
-
-.text-underline {
-	text-decoration: underline;
 }
 
 /* Text Color CSS */
@@ -142,20 +96,7 @@ a,
 	color: #F00;
 }
 
-/* Text Align CSS */
-.ta-left {
-	text-align: left;
-}
-
-.ta-center {
-	text-align: center;
-}
-
 /* Width CSS */
-.w-full {
-	width: 100%;
-}
-
 .w-80 {
 	width: 80%;
 }
@@ -183,10 +124,6 @@ a,
 }
 
 /* Margin CSS */
-.mb-5 {
-	margin-bottom: 5px;
-}
-
 .mb-10 {
 	margin-bottom: 10px;
 }
