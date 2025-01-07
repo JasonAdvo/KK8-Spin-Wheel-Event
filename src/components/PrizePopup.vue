@@ -21,7 +21,7 @@
 					alt="Inner Flare Frame">
 				<div style="padding: 20px;">
 					<div class="prize-popup-header">
-						<h2 class="color-white text-uppercase fw-700 fs-18">{{ $t('You_Won') }} :</h2>
+						<h2 class="color-white text-uppercase fw-bold fs-18">{{ $t('You_Won') }} :</h2>
 					</div>
 					<div class="prize-popup-body">
 						<p class="prize-text color-white text-uppercase fw-800 fs-36">{{ prize.value }}</p>

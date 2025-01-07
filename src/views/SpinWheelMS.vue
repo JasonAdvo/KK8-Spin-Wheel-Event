@@ -277,7 +277,7 @@
 
 			<div class="Option_Button d-flex justify-content-center align-items-center pointer rounded-2 mb-2"
 				style="border: 2px solid #FFFCFC;">
-				<div class="color-white text-center fs-14 fw-700 text-uppercase text-nowrap">
+				<div class="color-white text-center fs-14 fw-bold text-uppercase text-nowrap">
 					Ya
 				</div>
 			</div>

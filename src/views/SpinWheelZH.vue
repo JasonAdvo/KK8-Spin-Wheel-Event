@@ -281,7 +281,7 @@
 
 			<div class="d-flex justify-content-center align-items-center pointer"
 				style="width: 180px; height: 35px; padding: 9px 29px; border-radius: 4px; border: 2px solid #FFFCFC; margin-bottom: 10px;">
-				<div class="color-white text-center fs-14 fw-700 text-uppercase"
+				<div class="color-white text-center fs-14 fw-bold text-uppercase"
 					style="font-style: normal;line-height: normal; white-space: nowrap;">
 					是
 				</div>

@@ -284,7 +284,7 @@
 
 			<div class="Option_Button d-flex justify-content-center align-items-center pointer mb-2 rounded-2"
 				style="border: 2px solid #FFFCFC;">
-				<div class="color-white text-center fs-14 fw-700 text-uppercase ">
+				<div class="color-white text-center fs-14 fw-bold text-uppercase ">
 					Yes
 				</div>
 			</div>
